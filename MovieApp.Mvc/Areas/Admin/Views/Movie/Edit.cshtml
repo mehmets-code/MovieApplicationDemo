@@ -1,0 +1,92 @@
+﻿@model MovieApp.Mvc.Areas.Admin.Models.MovieEditViewModel
+
+@{
+    ViewData["Title"] = ViewBag.ActionMode;
+}
+
+<h1>@(ViewBag.ActionMode)</h1>
+
+<h4>Movie</h4>
+<hr />
+<form asp-controller="Movie" asp-action=@(ViewBag.ActionMode) method="post" enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="Id" />
+    <div class="row mt-2">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-group d-block ">
+                        <input type="text" id="movieTitle" class="form-control" placeholder="Film Başlığı" asp-for="Title" />
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+                    <div class="form-group d-block ">
+                        <input type="text" id="movieTitle" class="form-control" placeholder="Film Başrol Oyuncuları " asp-for="Headliners" />
+                        <span asp-validation-for="Headliners" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <textarea id="text-editor" asp-for="Description"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    Temel Konfigürasyonlar
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="categoryList" asp-for="categori"></label>
+                        <select multiple id="categoryList" class="form-control" asp-for="categori" asp-items="@(new SelectList(Model.Categories,"Id","Name"))">
+                            <option></option>
+                        </select>
+                        <span asp-validation-for="categori" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="datepicker" asp-for="Date"></label>
+                        <input type="text" id="datepicker" class="form-control" value="@DateTime.Now.ToShortDateString()" asp-for="Date" />
+                        <span asp-validation-for="Date" class="text-danger"></span>
+                    </div>
+                    @if (ViewBag.ActionMode == "Update")
+                    {
+                <div class="form-group">
+                    <label asp-for="Thumbnail"></label>
+                    <input asp-for="Thumbnail" type="hidden" />
+                    <img class="my-image" src="~/img/@Model.Thumbnail" alt="@Model.Title" />
+                    <span asp-validation-for="Thumbnail" class="text-danger"></span>
+                </div>
+                    }
+                    <div class="form-group">
+                        <label for="thumbnailUpload" asp-for="ThumbnailFile"></label>
+                        <input type="file" id="thumbnailUpload" accept="image/*" class="form-control-file" asp-for="ThumbnailFile" />
+                        <span asp-validation-for="ThumbnailFile" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary btn-block mt-4">Kaydet</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section scripts{
+    <script>
+         @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    $(document).ready(function () {
+        $('#categoryList').multiselect({
+            checkAllText: "Your text for CheckAll",
+            uncheckAllText: "Your text for UncheckCheckAll",
+            noneSelectedText: "Your text for NoOptionHasBeenSelected",
+            selectedText: "You selected # of #" //The multiselect knows to display the second # as the total
+        });
+
+    });
+
+    </script>
+}

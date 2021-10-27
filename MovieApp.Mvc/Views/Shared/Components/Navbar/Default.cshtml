@@ -1,0 +1,32 @@
+﻿@model MovieApp.Entities.Dtos.UserDto
+
+    <nav class="navbar bg-dark navbar-dark navbar-expand-sm">
+        <div class="container">
+            <a href="#" class="navbar-brand"><i class="fas fa-film">&nbsp;Film Site</i></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapse">
+                <i class="fas fa-film"></i>
+            </button>
+            <div id="navbar-collapse" class="collapse navbar-collapse">
+                <ul class="navbar-nav ml-auto">
+                    @if (Model.User != null)
+                    {
+                    <li class="nav-item"><a asp-area="Admin" asp-controller="User" asp-action="ChangeDetails" class="nav-link">@Model.User.UserName</a></li>
+                        if (Model.userRoles.Contains("AdminArea.Home.Read"))
+                        {
+                            <li class="nav-item"><a asp-area="Admin" asp-controller="Home" asp-action="Index" class="nav-link">Admin</a></li>
+                        }
+
+                        <li class="nav-item"><a asp-area="Admin" asp-controller="Auth" asp-action="Logout" class="nav-link">Çıkış Yap</a></li>
+                    }
+
+                    else
+                    {
+                        <li class="nav-item"><a asp-area="Admin" asp-controller="Auth" asp-action="Login" class="nav-link">Login</a></li>
+                    }
+
+
+                    <li class="nav-item"><a href="#" class="nav-link">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>

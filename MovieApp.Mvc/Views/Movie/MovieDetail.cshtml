@@ -1,0 +1,50 @@
+﻿@using MovieApp.Entities.Dtos
+@model MovieApp.Entities.Dtos.MovieDto
+@{ Layout = "_MovieLayout";
+                ViewBag.Title = Model.Movie.Title; }
+<!-- Post Content Column -->
+<div class="col-lg-8">
+    <!-- Title -->
+    <h1 class="mt-4">@Model.Movie.Title</h1>
+    <div class="row">
+        <div class="col-md-3">
+            <img class="img-fluid rounded" src="~/img/@Model.Movie.Thumbnail" alt="@Model.Movie.Title">
+        </div>
+        <div class="col-md-9">
+
+            <h5 class="card-title">
+                @Model.Movie.Title
+            </h5>
+            <p class="card-text">
+                @Html.Raw(Model.Movie.Description)
+            </p>
+            <p class="card-text">
+                <small class="text-muted" @Model.Movie.Year.ToShortDateString()</small>
+            </p>
+
+        </div>
+    </div>
+    <hr />
+    <p class="text-center">Görüntülenme Sayısı: <span class="badge badge-info">@Model.Movie.ViewCount</span> Yorum Sayısı: <span class="badge badge-warning">@Model.Movie.CommentCount</span></p>
+    <!-- Comments Form -->
+    @if (Model.UserName == null)
+    {
+        <p>Sadece üye olan kişiler yorum yapabilir. Giriş yapmak veya üye değilseniz kaydolmak için <a asp-area="Admin" asp-controller="Auth" asp-action="Login">tıklayın</a></p>
+    }
+    else
+    {
+        <partial name="~/Views/Comment/Add.cshtml" model="new CommentAddDto{MovieId = Model.Movie.Id,UserId = Model.UserId,UserName = Model.UserName}" />
+    }
+
+    <div id="comments">
+        @foreach (var comment in Model.Movie.Comments)
+        {<!-- Single Comment -->
+                            <div class="media mb-4">
+                                <img class="d-flex mr-3 rounded-circle" src="https://randomuser.me/api/portraits/men/34.jpg" alt="">
+                                <div class="media-body">
+                                    <h5 class="mt-0">@comment.UserName</h5>
+                                    @comment.Content
+                                </div>
+                            </div>}
+    </div>
+</div>

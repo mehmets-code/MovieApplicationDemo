@@ -1,0 +1,75 @@
+﻿@using System.Text.RegularExpressions
+@model MovieApp.Mvc.Models.MovieSearchViewModel
+@{ ViewBag.Title = "Arama Sonuçları";
+    Layout = "_Layout";
+    Regex regex = new Regex("<[^>]*>"); }
+
+<div class="col-md-8">
+
+    <h1 class="my-4">
+        Arama Sonuçları
+    </h1>
+
+    @foreach (var movie in Model.MovieListDto.Movies)
+    {
+<div class="card mb-3">
+    <div class="row no-gutter">
+        <div class="col-md-3">
+            <img class="card-img-top" src="~/img/@movie.Thumbnail" alt="@movie.Title">
+        </div>
+        <div class="col-md-9">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <a asp-action="MovieDetail" asp-controller="Movie" asp-route-movieId="@movie.Id">@movie.Title</a>
+                </h5>
+                <p class="card-text">
+                    @{ movie.Description = regex.Replace(movie.Description, ""); }
+                    @(movie.Description.Length>250 ? movie.Description.Substring(0,250) : movie.Description)
+                </p>
+                <p class="card-text">
+                    Eklenme Tarihi :
+                    <small class="text-muted">@movie.Year</small>
+                </p>
+                <p class="card-text">
+                    Kategorisi :
+                    @foreach (var categorymovie in movie.CategoryMovies)
+                    {
+
+    <a asp-action="Index" asp-route-id="@categorymovie">@categorymovie.Movie.Title</a>}
+                </p>
+                <p class="card-text">
+                    <a asp-action="UpdateMovie" asp-route-id="@movie.Id" class="btn btn-outline-info">Update</a>
+                    <a asp-action="DeleteMovie" asp-route-id="@movie.Id" class="btn btn-outline-danger">Delete</a>
+                    <a asp-action="ComingSoon" class="btn btn-outline-warning">ComingSoon</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+</div>}
+    <!-- Pagination -->
+    <ul class="pagination justify-content-center mb-4">
+        @{
+                        @if (Model.MovieListDto.ShowPrevious)
+                        {
+            <li class="page-item">
+                <a class="page-link" asp-route-currentPage="@(Model.MovieListDto.CurrentPage-1)"  asp-route-pageSize="@Model.MovieListDto.PageSize" asp-route-keyword="@Model.Keyword">Önceki</a>
+            </li>            }
+                                    @for (var i = 1; i <= Model.MovieListDto.TotalPages; i++)
+                                    {
+                        <li class="page-item @(i == Model.MovieListDto.CurrentPage ? "active" : "")">
+                            <a class="page-link" asp-route-currentPage="@i"  asp-route-pageSize="@Model.MovieListDto.PageSize" asp-route-keyword="@Model.Keyword">@i</a>
+                        </li>            }
+                                                @if (Model.MovieListDto.ShowNext)
+                                                {
+                                    <li class="page-item">
+                                        <a class="page-link" asp-route-currentPage="@(Model.MovieListDto.CurrentPage+1)"  asp-route-pageSize="@Model.MovieListDto.PageSize" asp-route-keyword="@Model.Keyword">Sonraki</a>
+                                    </li>            } }
+    </ul>
+</div>
+
+
+
+
+
+

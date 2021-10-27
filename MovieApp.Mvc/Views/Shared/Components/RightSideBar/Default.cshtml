@@ -1,0 +1,69 @@
+﻿@using MovieApp.Entities.Concrete
+@model MovieApp.Mvc.Models.RightSideBarViewModel
+    <!-- Search Widget -->
+    <div class="card my-4">
+        <h5 class="card-header">Arama</h5>
+        <div class="card-body">
+            <form asp-controller="Movie" asp-action="Search" method="get">
+                <div class="input-group">
+                    <input type="text" class="form-control" name="keyword" placeholder="Aramak istediğiniz anahtar kelime...">
+                    <span class="input-group-append">
+                        <button class="btn btn-secondary" type="submit">Ara!</button>
+                    </span>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Categories Widget -->
+    <div class="card my-4">
+        <h5 class="card-header">Kategoriler</h5>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-lg-12">
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <a asp-controller="Home" asp-action="Index">Hepsi</a>
+                        </li>
+                        @foreach (var category in Model.Categories)
+                        {
+            <li class="list-group-item">
+                <a asp-controller="Home" asp-action="Index" asp-route-categoryId="@category.Id">@category.Name</a>
+            </li>
+}
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Side Widget -->
+    <div class="card my-4">
+        <h5 class="card-header">En Çok Görüntülenen Filmler</h5>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-lg-12">
+                    <ul class="list-group">
+                        @for (int i = 0; i < Model.Movies.Count; i++)
+                        {
+                            if (i % 2 == 0)
+                            {
+            <li class="list-group-item list-group-item-primary">
+                <a asp-controller="Movie" asp-action="MovieDetail" asp-route-movieId="@Model.Movies[i].Id">@Model.Movies[i].Title</a>
+            </li>
+ }
+        else
+        {
+<li class="list-group-item list-group-item-info">
+    <a asp-controller="Movie" asp-action="MovieDetail" asp-route-movieId="@Model.Movies[i].Id">@Model.Movies[i].Title</a>
+</li>
+}
+}
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+

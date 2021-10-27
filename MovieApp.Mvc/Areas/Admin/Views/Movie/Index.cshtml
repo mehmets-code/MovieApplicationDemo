@@ -1,0 +1,81 @@
+﻿@using MovieApp.Shared.Utilities.Results.ComplexTypes
+@model IEnumerable<MovieApp.Entities.Concrete.Movie>
+@{
+    Layout = "_Layout";
+    ViewBag.Title = "Filmler Listesi";
+}
+
+<ol class="breadcrumb mb-3 mt-2">
+    <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="Home" asp-action="Index">Admin</a></li>
+    <li class="breadcrumb-item active"><a asp-area="Admin" asp-controller="Movie" asp-action="Index">Filmler</a></li>
+</ol>
+<div class="card mb-4 mt-2">
+    <div class="card-header">
+        <div class="row">
+            <div class="row-cols-3">
+                <i class="fas fa-table mr-1"></i>
+                Kategoriler
+            </div>
+            <div class="row-cols-9">
+                <a asp-area="Admin" asp-controller="Movie" asp-action="Add" class="btn btn-success ml-auto">Ekle</a>
+                <a asp-area="Admin" asp-controller="Movie" asp-action="Index" class="btn btn-primary col-md-auto">Yenile</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="categoriesTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Başlık</th>
+                        <th>Yılı</th>
+                        <th>Görüntülenme Sayısı</th>
+                        <th>Beğenilme Sayısı</th>
+                        <th>Yorum Sayısı</th>
+                        <th>Başroller</th>
+                        <th>Resim</th>
+                        <th>Güncelle</th>
+                        <th>Sil</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th>ID</th>
+                        <th>Başlık</th>
+                        <th>Yılı</th>
+                        <th>Görüntülenme Sayısı</th>
+                        <th>Beğenilme Sayısı</th>
+                        <th>Yorum Sayısı</th>
+                        <th>Başroller</th>
+                        <th>Resim</th>
+                        <th>Güncelle</th>
+                        <th>Sil</th>
+                    </tr>
+                </tfoot>
+                <tbody>
+                    @foreach (var movie in Model)
+                    {
+                    <tr>
+                        <td>@movie.Id</td>
+                        <td>@movie.Title</td>
+                        <td>@movie.Year</td>
+                        <td>@movie.ViewCount</td>
+                        <td>@movie.LikeCount</td>
+                        <td>@movie.CommentCount</td>
+                        <td>@movie.Headliners</td>
+                        <td><img src="~/img/ @movie.Thumbnail" alt="@movie.Title" class="my-image-table" /></td>
+                        <td>
+                            <a asp-action="Update" class="btn btn-primary btn-sm btn-update" asp-route-id="@movie.Id"><span class="fas fa-edit"></span></a>
+                        </td>
+                        <td>
+                            <a asp-action="Delete" class="btn btn-danger btn-sm btn-delete" asp-route-id="@movie.Id"><span class="fas fa-minus-circle"></span></a>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
